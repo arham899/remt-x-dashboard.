@@ -1,6 +1,27 @@
-# REMT-X - Real-Time Telemetry & Live Mirroring System
+<div align="center">
 
-REMT-X is a full-stack telemetry and live mirroring system designed for monitoring field research operations on platforms like KoboToolbox and SurveyCTO. The system allows supervisors to monitor active field enumerators in real-time, view live input streams as they type, track real-time GPS locations, and oversee project operations from a centralized "God Mode" dashboard.
+# 📡 REMT-X
+
+**Real-time quality assurance for field survey teams.**
+
+A three-part system — Chrome extension, WebSocket relay and React dashboard — that lets survey supervisors see live form progress and GPS positions of their enumerators on KoboToolbox and SurveyCTO.
+
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=white) ![Fastify](https://img.shields.io/badge/Fastify-000000?style=flat-square&logo=fastify&logoColor=white) ![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=flat-square&logo=socketdotio&logoColor=white) ![Chrome MV3](https://img.shields.io/badge/Chrome%20MV3-4285F4?style=flat-square&logo=googlechrome&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white) ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
+
+**[🔴 Live dashboard](https://remt-x-admin-dashboard-kxet.vercel.app/)**
+
+</div>
+
+## ✨ Highlights
+
+- **Manifest V3 extension** — content script captures form input and geolocation; a visible "REMT-X Active" banner tells the enumerator monitoring is on
+- **Hand-rolled Socket.io client** — the service worker speaks the Engine.io packet protocol over a raw WebSocket instead of bundling the Socket.io library, keeping the extension light on battery and bandwidth
+- **Room-based relay** — Fastify + Socket.io hub isolates each survey project in its own room
+- **Supervisor dashboard** — live form mirroring, enumerator status table, field map and raw event log, with a capped ring buffer to keep the UI responsive
+- **Built for real fieldwork** — targets the KoboToolbox and SurveyCTO web forms used in large field surveys
+
+---
+REMT-X is a full-stack telemetry and live mirroring system designed for monitoring field research operations on platforms like KoboToolbox and SurveyCTO. The system allows supervisors to monitor active field enumerators in real-time, view live input streams as they type, track real-time GPS locations, and oversee project operations from a centralized supervisor dashboard.
 
 ---
 
@@ -8,7 +29,7 @@ REMT-X is a full-stack telemetry and live mirroring system designed for monitori
 
 The REMT-X ecosystem consists of three main components:
 
-1. **REMT-X Chrome Extension (Client agent)**: A Manifest V3 extension injected into KoboToolbox and SurveyCTO web forms. It captures geolocated breadcrumbs and input events, transmitting them via a low-overhead, stealthy WebSocket connection.
+1. **REMT-X Chrome Extension (Client agent)**: A Manifest V3 extension injected into KoboToolbox and SurveyCTO web forms. It captures geolocated breadcrumbs and input events, transmitting them via a low-overhead WebSocket connection. A visible on-page banner shows the enumerator when REMT-X is active.
 2. **REMT-X Telemetry Hub (Relay broker)**: A high-performance Fastify server utilizing Socket.io to manage real-time connections, project rooms, and telemetry broadcasting.
 3. **REMT-X Admin Dashboard (Supervisor portal)**: A React-based web application with dashboard statistics, live input mirroring, activity logs, and enumerator tracking.
 
@@ -52,7 +73,7 @@ graph TD
 - **Real-Time Protocol**: Socket.io
 - **CORS Management**: `@fastify/cors`
 
-### 3. Chrome Extension (stealth Agent)
+### 3. Chrome Extension (Client Agent)
 - **Manifest Version**: 3
 - **Script Types**: Content Scripts (DOM monitoring), Service Worker (Background socket client)
 - **Network Interface**: Raw WebSocket (Engine.io/Socket.io protocol formatting)
